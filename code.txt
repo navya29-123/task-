@@ -1,0 +1,35 @@
+# text_summarizer.py
+
+from transformers import pipeline
+
+def summarize_text(text):
+    # Load summarization pipeline
+    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    
+    # Generate summary
+    summary = summarizer(text, max_length=150, min_length=40, do_sample=False)
+    
+    return summary[0]['summary_text']
+
+
+if __name__ == "__main__":
+    print("\n🔷 CODTECH TEXT SUMMARIZATION TOOL 🔷")
+    print("Paste your article below. Press ENTER twice to summarize:\n")
+
+    # Collect multiline input
+    lines = []
+    while True:
+        line = input()
+        if line.strip() == "":
+            break
+        lines.append(line)
+    
+    full_text = " ".join(lines)
+
+    if len(full_text.strip()) < 100:
+        print("\n⚠️ Please provide a longer text to summarize.")
+    else:
+        print("\n⏳ Summarizing...\n")
+        summary = summarize_text(full_text)
+        print("📌 Summary:\n")
+        print(summary)
